@@ -70,4 +70,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# My custom ignores
 debug.log
+/[Aa]ssets/Plugins/GitHub.meta
+/[Aa]ssets/Plugins/GitHub/*
