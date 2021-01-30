@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float walkSpeed = 5f;
     [SerializeField]
-    private float rotateSpeed = 0.25f;
+    private float rotateSpeed = 0.5f;
     [SerializeField]
     private float inputDeadband = 0.05f;
 
