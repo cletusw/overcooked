@@ -11,9 +11,13 @@ public class PlayerMovement : MonoBehaviour
     private float rotateSpeed = 0.5f;
     [SerializeField]
     private float inputDeadband = 0.05f;
+    [SerializeField]
+    private float pushPower = 2f;
 
     private CharacterController characterController;
     private Vector2 inputVector;
+
+    private int collisionCounter = 0;
 
     void Start()
     {
@@ -24,7 +28,8 @@ public class PlayerMovement : MonoBehaviour
     {
         var inputMagnitude = inputVector.sqrMagnitude;
 
-        if (inputMagnitude > inputDeadband) {
+        if (inputMagnitude > inputDeadband)
+        {
             var move = new Vector3(inputVector.x, 0, inputVector.y);
 
             transform.rotation = Quaternion.Slerp(
@@ -37,5 +42,27 @@ public class PlayerMovement : MonoBehaviour
     void OnMove(InputValue input)
     {
         inputVector = input.Get<Vector2>();
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody other = hit.collider.attachedRigidbody;
+
+        // no rigidbody
+        if (other == null || other.isKinematic)
+        {
+            return;
+        }
+
+        // We dont want to push objects below us
+        if (hit.moveDirection.y < -0.3f)
+        {
+            return;
+        }
+
+        // Apply the push
+        other.AddForceAtPosition(hit.controller.velocity * pushPower, hit.point);
+        Debug.DrawRay(hit.point, hit.controller.velocity * pushPower, Color.red, 3f);
+        Debug.Log("collision! " + collisionCounter++);
     }
 }
